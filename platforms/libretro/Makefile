@@ -280,6 +280,18 @@ else ifeq ($(platform), miyoo)
    PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
    CFLAGS += -fomit-frame-pointer -ffast-math -march=armv5te -mtune=arm926ej-s
    CXXFLAGS += $(CFLAGS)
+# XYDDS
+else ifeq ($(platform), xydds)
+   TARGET := $(TARGET_NAME)_libretro.so
+   CC = /opt/xydds/usr/bin/arm-linux-gcc
+   CXX = /opt/xydds/usr/bin/arm-linux-g++
+   AR = /opt/xydds/usr/bin/arm-linux-ar
+   fpic := -fPIC
+   SHARED := -shared -Wl,-version-script=$(CORE_DIR)/link.T
+   PLATFORM_DEFINES := -DCC_RESAMPLER -DCC_RESAMPLER_NO_HIGHPASS
+   CFLAGS += -fomit-frame-pointer -ffast-math -marm -mfpu=neon-vfpv4 -mfloat-abi=hard
+   CFLAGS += -DARM -mcpu=cortex-a7
+   CXXFLAGS += $(CFLAGS)
 # PS2
 else ifeq ($(platform), ps2)
    TARGET := $(TARGET_NAME)_libretro_$(platform).a
